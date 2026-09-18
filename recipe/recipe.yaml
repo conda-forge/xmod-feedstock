@@ -1,25 +1,25 @@
 schema_version: 1
 
 context:
-  version: "1.8.1"
+  version: "1.10.0"
 
 package:
   name: xmod
   version: ${{ version }}
 
 source:
-  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/xmod-${{ version }}.tar.gz
-  sha256: 38c76486b9d672c546d57d8035df0beb7f4a9b088bc3fb2de5431ae821444377
+  url: https://github.com/rec/xmod/archive/refs/tags/v${{ version }}.tar.gz
+  sha256: ed8b42a59ff9bcd372df0ffd10cbde717207f5ab44d6614433dd0f438ce50b36
 
 build:
-  number: 1
+  number: 0
   noarch: python
   script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
     - python ${{ python_min }}.*
-    - poetry-core
+    - hatchling
     - pip
   run:
     - python >=${{ python_min }}
@@ -32,6 +32,14 @@ tests:
       python_version:
         - ${{ python_min }}.*
         - '*'
+  - script:
+      - pytest -vvv test/
+    requirements:
+      run:
+        - pytest
+    files:
+      source:
+        - test/
 
 about:
   summary: 🌱 Turn any object into a module 🌱
